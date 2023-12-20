@@ -8,6 +8,9 @@ from client import Client, if_client
 
 
 def day(k, alpha_dict):
+    waiting_time = 0
+    clients = 0
+
     self_checkout_status = [0 for x in range(6)]
     regular_checkout_status = [0 for x in range(k)]
 
@@ -23,6 +26,7 @@ def day(k, alpha_dict):
         alpha = alpha_dict[f'{key}:00-{key+1}:00']
 
         if if_client(alpha):
+            clients += 1
 
             client = Client()
             client.client_age()
@@ -48,10 +52,16 @@ def day(k, alpha_dict):
 
                     queue_dict[min_name].insert_at_end(client)
 
+        for queue_name, queue in queue_dict.items():
+            if queue.get_length() > 0:
+                waiting_time += queue.get_length()
+
         self_checkout_status = [x - 1 if x > 0 else 0 for x in self_checkout_status]
         regular_checkout_status = [x - 1 if x > 0 else 0 for x in regular_checkout_status]
 
-    if self_checkout_status != [0 for x in range(6)]:
-        pass
-    if regular_checkout_status != [0 for x in range(k)]:
-        pass
+    while self_checkout_status != [0 for x in range(6)] and regular_checkout_status != [0 for x in range(k)]:
+        self_checkout_status = [x - 1 if x > 0 else 0 for x in self_checkout_status]
+        regular_checkout_status = [x - 1 if x > 0 else 0 for x in regular_checkout_status]
+        waiting_time += 1
+
+    return waiting_time/clients
