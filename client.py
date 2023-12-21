@@ -19,6 +19,10 @@ class Client:
 
     def client_age(self):
         self.age = round(r.gauss(40, 20))
+        if self.age < 10:
+            self.client_age()
+        if self.age > 99:
+            self.client_age()
 
     def client_checkout_choice(self):
         prob = -0.8*self.age + 80
