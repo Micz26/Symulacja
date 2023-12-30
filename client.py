@@ -16,9 +16,11 @@ class Client:
         self.age = None
         self.service_time = None
         self.checkout_choice = None
+        self.age_str = None
 
     def client_age(self):
         self.age = round(r.gauss(40, 20))
+        self.age_str = str(self.age)
         if self.age < 10:
             self.client_age()
         if self.age > 99:
@@ -33,7 +35,7 @@ class Client:
 
     def client_service_time(self):
         if self.checkout_choice == 1:
-            self.service_time = round(r.gauss(400, 100)*self.__class__.time_ratio_dict[f'{self.age[0]}0'])
+            self.service_time = round(r.gauss(400, 100)*self.__class__.time_ratio_dict[f'{self.age_str[0]}0'])
         elif self.checkout_choice == 0:
             self.service_time = round(r.gauss(400, 100))
 

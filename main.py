@@ -12,12 +12,12 @@ def check_queues(queue_dict):
 def iteration(regular_checkout_status, self_checkout_status, queue_dict, waiting_time):
     for idx, checkout_status in enumerate(regular_checkout_status):
         if checkout_status <= 0 and queue_dict[f'queue{idx + 1}'].get_length() != 0:
-            regular_checkout_status[idx] = queue_dict[f'queue{idx + 1}'].head.service_time
+            regular_checkout_status[idx] = queue_dict[f'queue{idx + 1}'].head.data
             queue_dict[f'queue{idx + 1}'].remove_at(0)
 
-    for idx, checkout_status in self_checkout_status:
+    for idx, checkout_status in enumerate(self_checkout_status):
         if checkout_status <= 0 and queue_dict['queue0'].get_length() != 0:
-            self_checkout_status[idx] = queue_dict['queue0'].head.service_time
+            self_checkout_status[idx] = queue_dict['queue0'].head.data
             queue_dict[f'queue0'].remove_at(0)
 
     for queue_name, queue in queue_dict.items():
@@ -54,14 +54,14 @@ def day(k, alpha_dict):
 
             client = Client()
             client.client_age()
-            client.checkout_choice()
-            client.service_time()
+            client.client_checkout_choice()
+            client.client_service_time()
 
             if client.checkout_choice == 1:
                 if 0 in self_checkout_status:
                     self_checkout_status[self_checkout_status.index(0)] = client.service_time
                 else:
-                    queue_dict['queue0'].insert_at_end(client)
+                    queue_dict['queue0'].insert_at_end(client.service_time)
 
             elif client.checkout_choice == 0:
                 if 0 in regular_checkout_status:
@@ -76,7 +76,7 @@ def day(k, alpha_dict):
                             min = queue.get_length()
                             min_name = queue_name
 
-                    queue_dict[min_name].insert_at_end(client)
+                    queue_dict[min_name].insert_at_end(client.service_time)
 
         regular_checkout_status, self_checkout_status, queue_dict, waiting_time = iteration(regular_checkout_status,
                                                                                             self_checkout_status,
@@ -91,4 +91,23 @@ def day(k, alpha_dict):
     return waiting_time/clients
 
 
+sample_dict = {
+    '8:00-9:00': 1/400,
+    '8:00-9:00': 1/380,
+    '9:00-10:00': 1/360,
+    '10:00-11:00': 1/340,
+    '11:00-12:00': 1/320,
+    '12:00-13:00': 1/300,
+    '13:00-14:00': 1/250,
+    '14:00-15:00': 1/225,
+    '15:00-16:00': 1/200,
+    '16:00-17:00': 1/150,
+    '17:00-18:00': 1/150,
+    '18:00-19:00': 1/175,
+    '19:00-20:00': 1/200,
+    '20:00-21:00': 1/200,
+    '21:00-22:00': 1/250,
+    '22:00-23:00': 1/300
+}
 
+print(day(3, sample_dict))
