@@ -27,7 +27,7 @@ class Client:
             self.client_age()
 
     def client_checkout_choice(self):
-        prob = -0.8*self.age + 80
+        prob = (-0.8*self.age + 80)/100
         if r.random() < prob:
             self.checkout_choice = 1
         else:

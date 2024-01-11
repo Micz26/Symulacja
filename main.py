@@ -67,14 +67,15 @@ def day(k, alpha_dict):
                 if 0 in regular_checkout_status:
                     regular_checkout_status[regular_checkout_status.index(0)] = client.service_time
                 else:
-                    min = 99999999
                     min_name = ''
+                    mini = 9999999
                     for queue_name, queue in queue_dict.items():
                         if queue_name == "queue0":
                             continue
-                        if queue.get_length() < min:
-                            min = queue.get_length()
+                        if queue.get_length() < mini:
+                            mini = queue.get_length()
                             min_name = queue_name
+
 
                     queue_dict[min_name].insert_at_end(client.service_time)
 
@@ -110,4 +111,4 @@ sample_dict = {
     '22:00-23:00': 1/300
 }
 
-print(day(3, sample_dict))
+print(day(4, sample_dict))
