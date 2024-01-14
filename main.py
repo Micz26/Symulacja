@@ -88,3 +88,4 @@ def day(k, alpha_dict):
                                                                                             waiting_time)
 
     return waiting_time/clients
+
